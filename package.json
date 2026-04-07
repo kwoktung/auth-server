@@ -1,19 +1,38 @@
 {
-  "name": "auth",
+  "name": "auth-server",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "$npm_execpath run build && vite preview",
     "deploy": "$npm_execpath run build && wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "secrets:bulk": "wrangler secret bulk .prod.vars",
+    "auth:generate": "pnpm dlx auth@latest generate --output src/db/schema.ts --yes",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "wrangler d1 migrations apply auth-server-db --local",
+    "db:migrate:remote": "drizzle-kit migrate",
+    "lint": "eslint src",
+    "format": "prettier --write src",
+    "ci": "eslint src && prettier --check src"
   },
   "dependencies": {
     "better-auth": "^1.6.0",
+    "dotenv": "^17.4.1",
+    "drizzle-orm": "^0.45.2",
     "hono": "^4.12.11"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.2.3",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.5.2",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^10.2.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript-eslint": "^8.58.0",
     "vite": "^6.3.5",
     "vite-ssr-components": "^0.5.2",
     "wrangler": "^4.17.0"
