@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { renderer } from "./renderer";
 import { createAuth } from "./auth-utils";
 import { HTTPException } from "hono/http-exception";
@@ -6,6 +7,15 @@ import { HTTPException } from "hono/http-exception";
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
 app.use(renderer);
+
+app.use(
+  "*",
+  cors({
+    origin: (c) => c,
+    credentials: true,
+    allowMethods: ["GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"],
+  })
+);
 
 app.on(["POST", "GET"], "/api/auth/*", (c) => {
   const auth = createAuth(c.env);
