@@ -30,6 +30,16 @@ export function makeAuth(env: CloudflareBindings) {
         clientSecret: env.GOOGLE_CLIENT_SECRET,
       },
     },
+    advanced: {
+      cookies: {
+        state: {
+          attributes: {
+            sameSite: "none",
+            secure: true,
+          },
+        },
+      },
+    },
   });
 }
 
