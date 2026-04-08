@@ -9,7 +9,7 @@ const app = new Hono<{ Bindings: CloudflareBindings }>();
 app.use(renderer);
 
 app.use(
-  "*",
+  "/api/*",
   cors({
     origin: (c) => c,
     credentials: true,
