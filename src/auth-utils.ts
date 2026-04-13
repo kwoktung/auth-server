@@ -65,17 +65,10 @@ export function makeAuth(env: CloudflareBindings) {
       },
     },
     advanced: {
-      cookies: {
-        state: {
-          attributes: {
-            sameSite: "none",
-            secure: true,
-          },
-        },
-        ...(sharedParentDomain && {
-          session_token: { attributes: { domain: sharedParentDomain } },
-        }),
-      },
+      crossSubDomainCookies: {
+        enabled: true,
+        domain: sharedParentDomain,
+      }, // ensure cookies are set with the correct domain attribute for cross-subdomain usage
     },
   });
 }
